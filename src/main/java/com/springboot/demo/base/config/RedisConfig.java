@@ -45,6 +45,10 @@ public class RedisConfig {
         jedisPoolConfig.setBlockWhenExhausted(blockWhenExhausted);
         // 是否启用pool的jmx管理功能, 默认true
         jedisPoolConfig.setJmxEnabled(true);
+        //如果配置的redis没有密码，则密码字段需要设置为null.否则会报“ERR Client sent AUTH, but no password is set”异常
+        if("".equals(password)){
+            password=null;
+        }
         JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout, password);
         return jedisPool;
     }

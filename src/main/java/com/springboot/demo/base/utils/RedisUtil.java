@@ -100,7 +100,7 @@ public class RedisUtil{
 			jedis.select(indexdb);
 			return jedis.set(key, value);
 		} catch (Exception e) {
-
+			returnBrokenResource(jedis);
 			log.error(e.getMessage());
 			return "0";
 		} finally {
@@ -2285,6 +2285,19 @@ public class RedisUtil{
 			jedisPool.returnResource(jedis);
 		}
 	}
+
+	/**
+	 * Jedis对象出异常的时候，回收Jedis对象资源
+	 *
+	 * @param jedis
+	 */
+	public synchronized void returnBrokenResource(Jedis jedis) {
+		if (jedis != null) {
+			jedisPool.returnBrokenResource(jedis);
+		}
+
+	}
+
 
 	// public static RedisUtil getRu() {
 	// return ru;
